@@ -1,0 +1,16 @@
+#include <windows.h>
+#include <ntverp.h>
+
+#define VER_FILETYPE             VFT_DRV
+#define VER_FILESUBTYPE          VFT2_DRV_SYSTEM
+#define VER_FILEDESCRIPTION_STR  "PPL_RUNNER Driver"
+#define VER_INTERNALNAME_STR     "elam_driver.sys"
+
+#include "common.ver"
+MicrosoftElamCertificateInfo  MSElamCertInfoID
+{
+      1,
+      L"36C968D145A9DE42AB3B93AC1FDA96CE19D122593C72A8082C698E02AE7F888D\0",
+      0x800C,
+      L"\0"
+}

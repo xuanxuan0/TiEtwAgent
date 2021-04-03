@@ -1,0 +1,33 @@
+#pragma once
+#include <vector>
+#include <iostream>
+#include <map>
+#include <string>
+
+using std::vector;
+using std::wstring;
+using std::map;
+
+enum TI_ETW_EVENTS {
+    KERNEL_THREATINT_NO_TASK,
+    KERNEL_THREATINT_TASK_ALLOCVM_REMOTE,
+    KERNEL_THREATINT_TASK_PROTECTVM_REMOTE,
+    KERNEL_THREATINT_TASK_MAPVIEW_REMOTE,
+    KERNEL_THREATINT_TASK_QUEUEUSERAPC_REMOTE,
+    KERNEL_THREATINT_TASK_SETTHREADCONTEXT_REMOTE,
+    KERNEL_THREATINT_TASK_ALLOCVM_LOCAL,
+    KERNEL_THREATINT_TASK_PROTECTVM_LOCAL,
+    KERNEL_THREATINT_TASK_MAPVIEW_LOCAL,
+    KERNEL_THREATINT_TASK_QUEUEUSERAPC_LOCAL,
+    KERNEL_THREATINT_TASK_SETTHREADCONTEXT_LOCAL,
+    KERNEL_THREATINT_TASK_READVM_LOCAL,
+    KERNEL_THREATINT_TASK_WRITEVM_LOCAL,
+    KERNEL_THREATINT_TASK_READVM_REMOTE,
+    KERNEL_THREATINT_TASK_WRITEVM_REMOTE
+};
+
+extern map<wstring, uint64_t> allocation_fields;
+
+void log_single_detection(int evtId, map<wstring, uint64_t> evt_body);
+void allocvm_remote_detection(std::map<std::wstring, uint64_t>);
+

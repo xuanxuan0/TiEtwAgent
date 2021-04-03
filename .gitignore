@@ -1,0 +1,7 @@
+.vs/
+.vscode/
+bin/
+*/Win32
+*/x64
+elam_driver/RC*
+ppl_runner.pfx
