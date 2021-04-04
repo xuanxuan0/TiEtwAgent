@@ -5,8 +5,8 @@ This project was build to research, build and test different memory injection de
 An accompanying blog post can be found here: https://blog.redbluepurple.io/windows-security-research/kernel-tracing-injection-detection
 
 
-## Implemented detection usecases 
+### Implemented detection usecases 
 
+### TODO
 
-
-## Setup instructions
+### Setup instructions
