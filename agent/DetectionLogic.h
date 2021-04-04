@@ -1,4 +1,5 @@
 #pragma once
+#include <Windows.h>
 #include <vector>
 #include <iostream>
 #include <map>
@@ -26,8 +27,13 @@ enum TI_ETW_EVENTS {
     KERNEL_THREATINT_TASK_WRITEVM_REMOTE
 };
 
+enum DETECTIONS {
+    NO_DETECTION,
+    ALLOCVM_REMOTE_META_GENERIC,
+    ALLOCVM_REMOTE_SIGNATURES
+};
+
 extern map<wstring, uint64_t> allocation_fields;
 
-void log_single_detection(int evtId, map<wstring, uint64_t> evt_body);
-void allocvm_remote_detection(std::map<std::wstring, uint64_t>);
-
+VOID log_single_detection(int evtId, map<wstring, uint64_t> evt_body);
+VOID detect_event(std::map<std::wstring, uint64_t> parsed_event, int eid);
