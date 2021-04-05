@@ -35,5 +35,5 @@ enum DETECTIONS {
 
 extern map<wstring, uint64_t> allocation_fields;
 
-VOID log_single_detection(int evtId, map<wstring, uint64_t> evt_body);
+VOID report_detection(int evtId, map<wstring, uint64_t> evt_body);
 VOID detect_event(std::map<std::wstring, uint64_t> parsed_event, int eid);

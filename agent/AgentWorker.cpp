@@ -3,6 +3,58 @@
 #include "TiMemAgent.h"
 #include "AgentService.h"
 #include "DetectionLogic.h"
+#include "YaraInstance.h"
+
+void report_detection(int detId, map<wstring, uint64_t> evt_body) {
+    using std::to_string;
+
+    std::string sDump;
+    std::string sOutBody;
+
+    std::string procId = to_string(evt_body[L"CallingProcessId"]);
+    std::string procImage = get_pname(evt_body[L"CallingProcessId"]);
+    std::string targetProcId = to_string(evt_body[L"TargetProcessId"]);
+    std::string targetProcImage = get_pname(evt_body[L"TargetProcessId"]);
+    std::string protMask = itohs(evt_body[L"ProtectionMask"]);
+    std::string allocType = itohs(evt_body[L"AllocationType"]);
+    std::string size = to_string(evt_body[L"RegionSize"]);
+    std::string baseAddr = itohs(evt_body[L"BaseAddress"]);
+
+    switch (detId) {
+    case ALLOCVM_REMOTE_META_GENERIC:
+        sDump = dump_memory_ascii(evt_body[L"TargetProcessId"], evt_body[L"BaseAddress"], MEM_STR_SIZE);
+        sOutBody = "\n\n\n\n[7;31mANOMALOUS MEMORY ALLOCATION DETECTED[0m \n\n";
+        sOutBody += "[+] Source:       " + procImage + " (PID: " + procId + ")\n";
+        sOutBody += "[+] Target:       " + targetProcImage + " (PID: " + targetProcId + ")\n";
+        sOutBody += "[+] Protection:   " + protMask + "\n";
+        sOutBody += "[+] Allocation:   " + allocType + "\n";
+        sOutBody += "[+] Region size:  " + size + "\n";
+        sOutBody += "[+] Base address: " + baseAddr + "\n";
+        sOutBody += "[+] MZ-header:    ";
+        if (sDump.rfind("MZ", 0) == 0) {
+            sOutBody += "[31mYES[0m\n\n";
+        }
+        else {
+            sOutBody += "[33mNO[0m\n\n";
+        }
+        sOutBody += "[+] Memory at location: \n\n";
+        sOutBody += sDump;
+        break;
+    case ALLOCVM_REMOTE_SIGNATURES:
+    default:
+        return;
+    }
+
+    if (sOutBody.empty()) {
+        log_debug(L"TiMemAgent: Failed to report detection");
+        return;
+    }
+
+    if (!agent_message(sOutBody)) {
+        log_debug(L"TiMemAgent: Failed to send agent message");
+    }
+    return;
+}
 
 // Parse KERNEL_THREATINT_TASK_ALLOCVM_REMOTE
 map<wstring, uint64_t> parse_allocvm_remote(krabs::schema schema, krabs::parser parser) {
@@ -19,7 +71,6 @@ map<wstring, uint64_t> parse_allocvm_remote(krabs::schema schema, krabs::parser 
         for (krabs::property property : parser.properties()) {
             std::wstring wsPropertyName = property.name();
             if (allocation_fields.find(wsPropertyName) != allocation_fields.end()) {
-                // These are the only types of fields used for ALLOCVM_REMOTE detections
                 switch (property.type()) {
                     case TDH_INTYPE_UINT32:
                         allocation_fields[wsPropertyName] = parser.parse<std::uint32_t>(wsPropertyName);
