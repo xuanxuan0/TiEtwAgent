@@ -15,8 +15,7 @@ VOID WINAPI ServiceMain(DWORD argc, LPTSTR* argv)
     g_StatusHandle = RegisterServiceCtrlHandler(SERVICE_NAME, ServiceCtl);
     if (g_StatusHandle == NULL)
     {
-        ret = GetLastError();
-        log_debug(L"TiEtwSensor: ServiceMain: Registerservice_ctrl_handler Error: %d\n", ret);
+        log_debug(L"TiEtwSensor: Unable to register service control handler\n");
         return;
     }
 
@@ -31,7 +30,7 @@ VOID WINAPI ServiceMain(DWORD argc, LPTSTR* argv)
     if (SetServiceStatus(g_StatusHandle, &g_ServiceStatus) == FALSE)
     {
         ret = GetLastError();
-        log_debug(L"TiEtwSensor: ServiceMain: SetServiceStatus returned error Error: %d\n", ret);
+        log_debug(L"TiEtwSensor: Unable to set service status\n", ret);
         return;
     }
 
@@ -45,8 +44,7 @@ VOID WINAPI ServiceMain(DWORD argc, LPTSTR* argv)
         g_ServiceStatus.dwWin32ExitCode = GetLastError();
         g_ServiceStatus.dwCheckPoint = 1;
 
-        ret = GetLastError();
-        log_debug(L"TiEtwSensor: ServiceMain: SetServiceStatus returned error Error: %d\n", ret);
+        log_debug(L"TiEtwSensor: Unable to set service status\n");
         return;
     }
 
@@ -58,22 +56,19 @@ VOID WINAPI ServiceMain(DWORD argc, LPTSTR* argv)
 
     if (SetServiceStatus(g_StatusHandle, &g_ServiceStatus) == FALSE)
     {
-        ret = GetLastError();
-        log_debug(L"TiEtwSensor: ServiceMain: SetServiceStatus returned error Error: %d\n", ret);
+        log_debug(L"TiEtwSensor: Unable to set service status\n");
         return;
     }
 
     // Start a thread that will perform the main task of the service
     HANDLE hThread = CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)agent_worker, NULL, 0, NULL);
 
-    // Wait until our worker thread exits signaling that the service needs to stop
     if (NULL == hThread) {
-        ret = GetLastError();
-        log_debug(L"TiEtwSensor: ServiceMain: Failed to start the worker Error: %d\n", ret);
+        log_debug(L"TiEtwSensor: Failed to start the worker thread\n");
         return;
     }
     else {
-        log_debug(L"TiEtwSensor: ServiceMain: Starting worker thread\n");
+        log_debug(L"TiEtwSensor: Started worker thread\n");
         WaitForSingleObject(hThread, INFINITE);
     }
 
@@ -91,9 +86,7 @@ VOID WINAPI ServiceMain(DWORD argc, LPTSTR* argv)
 
     if (SetServiceStatus(g_StatusHandle, &g_ServiceStatus) == FALSE)
     {
-        ret = GetLastError();
-        log_debug(L"TiEtwSensor: ServiceMain: SetServiceStatus returned error Error: %d\n", ret);
-        return;
+        log_debug(L"TiEtwSensor: Unable to set service status\n");
     }
     
 }
@@ -107,7 +100,7 @@ VOID WINAPI ServiceCtl(DWORD CtrlCode)
     switch (CtrlCode)
     {
     case SERVICE_CONTROL_STOP:
-        log_debug(L"TiEtwSensor: ServiceCtl: Stopping the service");
+        log_debug(L"TiEtwSensor: Stopping the service");
         if (g_ServiceStatus.dwCurrentState != SERVICE_RUNNING)
             break;
 
@@ -118,8 +111,7 @@ VOID WINAPI ServiceCtl(DWORD CtrlCode)
 
         if (SetServiceStatus(g_StatusHandle, &g_ServiceStatus) == FALSE)
         {
-            ret = GetLastError();
-            log_debug(L"TiEtwSensor: ServiceCtl: SetServiceStatus(StopPending) Error: %d\n", ret);
+            log_debug(L"TiEtwSensor: Error stopping the service\n");
             return;
         }
         break;
@@ -141,9 +133,7 @@ DWORD agent_service_init()
 
     if (StartServiceCtrlDispatcher(serviceTable) == FALSE)
     {
-        ret = GetLastError();
-        log_debug(L"TiEtwSensor: service_entry: StartServiceCtrlDispatcher error: %d\n", ret);
-        return ret;
+        log_debug(L"TiEtwSensor: Error starting Service Control Dispatcher\n");
     }
 
     return ret;
