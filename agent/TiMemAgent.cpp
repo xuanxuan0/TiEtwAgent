@@ -22,13 +22,13 @@ DWORD install_elam()
     if (hFile == INVALID_HANDLE_VALUE) {
         ret = 1;
         log_debug(L"TiEtwSensor: Unable to read driver file\n");
-        return;
+        return ret;
     }
 
     if (InstallELAMCertificateInfo(hFile) == FALSE) {
         ret = 1;
         log_debug(L"TiEtwSensor: Unable to install ELAM certificate\n");
-        return;
+        return ret;
     }
 
     log_debug(L"TiEtwSensor: ELAM driver has been installed successfully\n");
