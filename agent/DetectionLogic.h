@@ -35,5 +35,20 @@ enum DETECTIONS {
 
 extern map<wstring, uint64_t> allocation_fields;
 
-VOID report_detection(int evtId, map<wstring, uint64_t> evt_body);
-VOID detect_event(std::map<std::wstring, uint64_t> parsed_event, int eid);
+class GenericEvent {
+public:
+    uint8_t type;
+
+    map<wstring, uint64_t> fields = { 
+        {(wstring)L"CallingProcessId",0},
+        {(wstring)L"TargetProcessId",0},
+        {(wstring)L"AllocationType",0},
+        {(wstring)L"ProtectionMask",0},
+        {(wstring)L"RegionSize",0},
+        {(wstring)L"BaseAddress",0} 
+    };
+};
+
+
+VOID report_detection(int detId, GenericEvent evt);
+VOID detect_event(GenericEvent evt);

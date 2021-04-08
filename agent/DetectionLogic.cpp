@@ -6,28 +6,29 @@ const int ALLOC_PROTECTION{ PAGE_EXECUTE_READWRITE };
 const int ALLOC_TYPE{ MEM_RESERVE | MEM_COMMIT };
 const int MIN_REGION_SIZE{ 10240 };
 
-VOID allocvm_remote_meta_generic(std::map<std::wstring, uint64_t> alloc_event) {
-    if (alloc_event[L"RegionSize"] >= MIN_REGION_SIZE) {
-        if (alloc_event[L"AllocationType"] == ALLOC_TYPE) {
-            if (alloc_event[L"ProtectionMask"] == ALLOC_PROTECTION) {
+DWORD allocvm_remote_meta_generic(GenericEvent alloc_event) {
+    if (alloc_event.fields[L"RegionSize"] >= MIN_REGION_SIZE) {
+        if (alloc_event.fields[L"AllocationType"] == ALLOC_TYPE) {
+            if (alloc_event.fields[L"ProtectionMask"] == ALLOC_PROTECTION) {
                 report_detection(ALLOCVM_REMOTE_META_GENERIC, alloc_event);
+                return TRUE;
             }
         }
     }
-    return;
+    return FALSE;
 }
 
 // Trigger Yara scan of the remotely allocated memory page
-VOID allocvm_remote_signatures(std::map<std::wstring, uint64_t> alloc_event) {
+VOID allocvm_remote_signatures(GenericEvent alloc_event) {
     return;
 }
 
-VOID detect_event(std::map<std::wstring, uint64_t> parsed_event, int eid) {
+VOID detect_event(GenericEvent evt) {
     // Run detection functions depending on source event type
-    switch (eid) {
+    switch (evt.type) {
         case KERNEL_THREATINT_TASK_ALLOCVM_REMOTE:
-            allocvm_remote_meta_generic(parsed_event);
-            allocvm_remote_signatures(parsed_event);
+            allocvm_remote_meta_generic(evt);
+            allocvm_remote_signatures(evt);
             break;
         case KERNEL_THREATINT_TASK_PROTECTVM_REMOTE:
         case KERNEL_THREATINT_TASK_MAPVIEW_REMOTE:
