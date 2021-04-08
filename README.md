@@ -22,3 +22,14 @@ An accompanying blog post can be found here: https://blog.redbluepurple.io/windo
 - [ ] Risk based detection lifecycle 
 
 ### Setup instructions
+Assuming you do not have a Microsoft-trusted signing certificate:
+- Put your machine in the test signing mode with bcdedit
+- Generate a self-signed certificate with ELAM and Code Signing EKU 
+- Sign TiEtwAgent.exe and your ELAM driver with the certificate 
+- ./TiEtwAgent install
+- net start TiEtwAgent
+- Look for logs, by default in C:\Windows\Temp\TiEtwAgent.txt
+
+PS. If you do not want to write an ELAM driver, you can get one from https://github.com/pathtofile/PPLRunner/tree/main/elam_driver
+
+Special thanks to @pathtofile for the post here: https://blog.tofile.dev/2020/12/16/elam.html
