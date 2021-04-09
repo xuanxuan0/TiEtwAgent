@@ -1,4 +1,4 @@
-#include <Microsoft.O365.Security.Krabsetw.4.1.18/lib/native/include/krabs.hpp>
+#include "..\packages\Microsoft.O365.Security.Krabsetw.4.1.18\lib\native\include\krabs.hpp"
 
 #include "TiEtwAgent.h"
 #include "AgentService.h"

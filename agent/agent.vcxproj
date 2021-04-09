@@ -50,14 +50,17 @@
     <LinkIncremental>true</LinkIncremental>
     <OutDir>$(SolutionDir)bin\$(Platform)\$(Configuration)\</OutDir>
     <PostBuildEventUseInBuild>false</PostBuildEventUseInBuild>
-    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(ProjectDir)lib</IncludePath>
     <IgnoreImportLibrary>true</IgnoreImportLibrary>
+    <LibraryPath>$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64);$(ProjectDir)lib</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <LinkIncremental>false</LinkIncremental>
+    <LinkIncremental>true</LinkIncremental>
     <OutDir>$(SolutionDir)bin\$(Platform)\$(Configuration)\</OutDir>
     <IgnoreImportLibrary>true</IgnoreImportLibrary>
     <PostBuildEventUseInBuild>false</PostBuildEventUseInBuild>
+    <LibraryPath>$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64);$(ProjectDir)lib</LibraryPath>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(ProjectDir)lib</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -68,15 +71,15 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\packages;$(ProjectDir)libyara;$(ProjectDir)libyara\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)libyara\include;$(ProjectDir)libyara;$(SolutionDir)packages;$(ProjectDir)lib</AdditionalIncludeDirectories>
       <AdditionalModuleDependencies>libyara64.lib</AdditionalModuleDependencies>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>Advapi32.lib;libyara64.lib</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(ProjectDir)libyara\include;$(ProjectDir)lib;$(ProjectDir)libyara</AdditionalLibraryDirectories>
+      <AdditionalDependencies>Advapi32.lib;libyara64.lib;"libboost_program_options-vc142-mt-s-x64-1_75.lib"</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(ProjectDir)libyara\include;$(ProjectDir)lib</AdditionalLibraryDirectories>
       <AdditionalOptions>/NODEFAULTLIB:MSVCRT %(AdditionalOptions)</AdditionalOptions>
     </Link>
     <PostBuildEvent>
@@ -86,6 +89,9 @@
     <PostBuildEvent>
       <Message>Sign</Message>
     </PostBuildEvent>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -97,10 +103,10 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)libyara;$(ProjectDir)libyara\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)libyara\include;$(ProjectDir)libyara;$(SolutionDir)packages;$(ProjectDir)lib</AdditionalIncludeDirectories>
       <AdditionalModuleDependencies>
       </AdditionalModuleDependencies>
-      <LanguageStandard_C>Default</LanguageStandard_C>
+      <LanguageStandard_C>stdc17</LanguageStandard_C>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
@@ -109,8 +115,8 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>Advapi32.lib;libyara64.lib</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(ProjectDir)libyara\include;$(ProjectDir);$(ProjectDir)libyara</AdditionalLibraryDirectories>
+      <AdditionalDependencies>Advapi32.lib;libyara64.lib;"libboost_program_options-vc142-mt-s-x64-1_75.lib"</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(ProjectDir)libyara\include;$(ProjectDir)lib</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
       <Command>
@@ -119,6 +125,9 @@
     <PostBuildEvent>
       <Message>Sign</Message>
     </PostBuildEvent>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="DetectionLogic.cpp" />
