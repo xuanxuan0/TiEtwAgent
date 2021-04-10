@@ -1,6 +1,6 @@
-#include "../packages/Microsoft.O365.Security.Krabsetw.4.1.18/lib/native/include/krabs.hpp"
+#include <Microsoft.O365.Security.Krabsetw.4.1.18/lib/native/include/krabs.hpp>
 
-#include "TiMemAgent.h"
+#include "TiEtwAgent.h"
 #include "AgentService.h"
 #include "DetectionLogic.h"
 #include "YaraInstance.h"
@@ -108,6 +108,14 @@ DWORD agent_worker()
     user_trace trace(ETS_NAME);
     provider<> provider(L"Microsoft-Windows-Threat-Intelligence");
     event_filter filter(predicates::id_is((int)KERNEL_THREATINT_TASK_ALLOCVM_REMOTE));
+
+    if (YARA_ENABLED) {
+        log_debug(L"TiEtwAgent: Setting up Yara\n");
+        YaraInstance yi;
+
+        yi.load_rules(YARA_RULE_DIR);
+        log_debug(L"TiEtwAgent: Yara setup complete\n");
+    }
 
     try {
         log_debug(L"TiEtwAgent: Setting up the trace session\n");

@@ -1,4 +1,3 @@
-#include "TiMemAgent.h"
 #include "AgentService.h"
 
 SERVICE_STATUS        g_ServiceStatus{ 0 };

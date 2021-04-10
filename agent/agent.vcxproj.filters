@@ -13,7 +13,7 @@
     <ClCompile Include="Helpers.cpp">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="TiMemAgent.cpp">
+    <ClCompile Include="TiEtwAgent.cpp">
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="YaraInstance.cpp">
@@ -30,15 +30,12 @@
     <ClInclude Include="Helpers.h">
       <Filter>Headers</Filter>
     </ClInclude>
-    <ClInclude Include="TiMemAgent.h">
+    <ClInclude Include="TiEtwAgent.h">
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="YaraInstance.h">
       <Filter>Headers</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Headers">

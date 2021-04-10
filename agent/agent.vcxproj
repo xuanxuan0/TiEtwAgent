@@ -68,7 +68,7 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <AdditionalIncludeDirectories>$(ProjectDir)libyara;$(ProjectDir)libyara\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\packages;$(ProjectDir)libyara;$(ProjectDir)libyara\include</AdditionalIncludeDirectories>
       <AdditionalModuleDependencies>libyara64.lib</AdditionalModuleDependencies>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
     </ClCompile>
@@ -76,7 +76,7 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>Advapi32.lib;libyara64.lib</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(ProjectDir)libyara\include;$(ProjectDir);$(ProjectDir)libyara</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(ProjectDir)libyara\include;$(ProjectDir)lib;$(ProjectDir)libyara</AdditionalLibraryDirectories>
       <AdditionalOptions>/NODEFAULTLIB:MSVCRT %(AdditionalOptions)</AdditionalOptions>
     </Link>
     <PostBuildEvent>
@@ -123,7 +123,7 @@
   <ItemGroup>
     <ClCompile Include="DetectionLogic.cpp" />
     <ClCompile Include="YaraInstance.cpp" />
-    <ClCompile Include="TiMemAgent.cpp" />
+    <ClCompile Include="TiEtwAgent.cpp" />
     <ClCompile Include="Helpers.cpp" />
     <ClCompile Include="AgentService.cpp" />
     <ClCompile Include="AgentWorker.cpp" />
@@ -133,12 +133,18 @@
     <ClInclude Include="AgentService.h" />
     <ClInclude Include="YaraInstance.h" />
     <ClInclude Include="Helpers.h" />
-    <ClInclude Include="TiMemAgent.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
+    <ClInclude Include="TiEtwAgent.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
+    <Import Project="..\packages\boost.1.75.0.0\build\boost.targets" Condition="Exists('..\packages\boost.1.75.0.0\build\boost.targets')" />
+    <Import Project="..\packages\boost_filesystem-vc142.1.75.0.0\build\boost_filesystem-vc142.targets" Condition="Exists('..\packages\boost_filesystem-vc142.1.75.0.0\build\boost_filesystem-vc142.targets')" />
   </ImportGroup>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\boost.1.75.0.0\build\boost.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\boost.1.75.0.0\build\boost.targets'))" />
+    <Error Condition="!Exists('..\packages\boost_filesystem-vc142.1.75.0.0\build\boost_filesystem-vc142.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\boost_filesystem-vc142.1.75.0.0\build\boost_filesystem-vc142.targets'))" />
+  </Target>
 </Project>

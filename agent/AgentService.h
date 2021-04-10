@@ -1,4 +1,5 @@
 #pragma once
+#include "TiEtwAgent.h"
 
 #ifndef SERVICE_CONFIG
 #define SERVICE_CONFIG

@@ -1,9 +1,5 @@
 #pragma once
-#include <Windows.h>
-#include <vector>
-#include <iostream>
-#include <map>
-#include <string>
+#include "TiEtwAgent.h"
 
 using std::vector;
 using std::wstring;
@@ -33,8 +29,6 @@ enum DETECTIONS {
     ALLOCVM_REMOTE_SIGNATURES
 };
 
-extern map<wstring, uint64_t> allocation_fields;
-
 class GenericEvent {
 public:
     uint8_t type;
@@ -48,7 +42,6 @@ public:
         {(wstring)L"BaseAddress",0} 
     };
 };
-
 
 VOID report_detection(int detId, GenericEvent evt);
 VOID detect_event(GenericEvent evt);

@@ -1,4 +1,4 @@
-#include "TiMemAgent.h"
+#include "Helpers.h"
 
 // int to hex-string
 std::string itohs(uint64_t i) {
@@ -99,6 +99,19 @@ BOOL agent_message(std::string message) {
 
     CloseHandle(hFile);
     return TRUE;
+}
+
+std::string ftostr(std::string& file_name) {
+    std::ifstream f;
+    std::stringstream ss;
+    
+    f.open(file_name);
+
+    if (!f)
+        return "";
+    
+    ss << f.rdbuf();
+    return ss.str();
 }
 
 VOID log_debug(const wchar_t* format, ...)
