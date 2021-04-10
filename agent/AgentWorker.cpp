@@ -48,7 +48,8 @@ void report_detection(int detId, GenericEvent evt) {
             break;
         case ALLOCVM_REMOTE_SIGNATURES:
         default:
-            return;
+            sOutBody = "\n\n\n\n[7;31mDETECTION: " + to_string((DETECTIONS)detId) + "[0m \n\n";
+            sOutBody += "[+] Source:       " + procImage + " (PID: " + procId + ")\n";
     }
 
     if (sOutBody.empty()) {
