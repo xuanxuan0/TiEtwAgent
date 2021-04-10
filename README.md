@@ -9,12 +9,8 @@ An accompanying blog post can be found here: https://blog.redbluepurple.io/windo
 
 ![gif](https://i.imgur.com/M9QXk1z.gif)
 
-# Implemented detection usecases 
-- [x] ALLOCVM_REMOTE_META_GENERIC
-- [ ] ALLOCVM_REMOTE_SIGNATURES
-- [ ] APC detections
-- [ ] Process hollowing detections
-- [ ] Reflective techniques
+# Adding new detections 
+Detection functions can be easily added in `DetectionLogic.cpp`, and called from `detect_event(GenericEvent evt)` for any source event type. Support for new event fields can be easily added by appending their name to the map in `GenericEvent` class declaration.
 
 # Setup instructions
 Assuming you do not have a Microsoft-trusted signing certificate:
@@ -28,8 +24,6 @@ Assuming you do not have a Microsoft-trusted signing certificate:
 # TODO
 - [x] PPL Service, event parsing 
 - [x] First detection  
-- [ ] Ingegrate Yara and scanning
-- [ ] Rewrite with OOP 
 - [ ] Detection lifecycle 
 - [ ] Risk based lifecycle 
 
